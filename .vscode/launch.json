@@ -1,0 +1,86 @@
+{
+    "configurations": [
+        {
+            "name": "Docker .NET Core Launch",
+            "type": "docker",
+            "request": "launch",
+            "preLaunchTask": "docker-run: debug",
+            "netCore": {
+                "appProject": "${workspaceFolder}/api2/api2.csproj"
+            }
+        },
+        {
+            "name": ".NET Core Launch (web)",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build-web",
+            "program": "${workspaceFolder}/web/bin/Debug/net5.0/web.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/web",
+            "stopAtEntry": false,
+            "serverReadyAction": {
+                "action": "openExternally",
+                "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
+            },
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            },
+            "sourceFileMap": {
+                "/Views": "${workspaceFolder}/Views"
+            }
+        },
+        {
+            "name": ".NET Core Launch (api1)",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build-api1",
+            "program": "${workspaceFolder}/api1/bin/Debug/net5.0/api1.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/api1",
+            "stopAtEntry": false,
+            "serverReadyAction": {
+                "action": "openExternally",
+                "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
+            },
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            },
+            "sourceFileMap": {
+                "/Views": "${workspaceFolder}/Views"
+            }
+        },
+        {
+            "name": ".NET Core Launch (api2)",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build-api2",
+            "program": "${workspaceFolder}/api2/bin/Debug/net5.0/api2.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/api2",
+            "stopAtEntry": false,
+            "serverReadyAction": {
+                "action": "openExternally",
+                "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
+            },
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            },
+            "sourceFileMap": {
+                "/Views": "${workspaceFolder}/Views"
+            }
+        },
+        {
+            "name": ".NET Core Attach",
+            "type": "coreclr",
+            "request": "attach",
+            "processId": "${command:pickProcess}"
+        },
+        {
+            "name": "Attach to .NET Functions",
+            "type": "coreclr",
+            "request": "attach",
+            "processId": "${command:azureFunctions.pickProcess}"
+        }
+    ],
+    "version": "0.2.0"
+}

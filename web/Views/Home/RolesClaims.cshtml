@@ -1,0 +1,32 @@
+@using Microsoft.AspNetCore.Authentication
+@{
+    ViewData["Title"] = "Roles & Claims";
+}
+<h1>@ViewData["Title"]</h1>
+
+<h5>Claims</h5>
+
+<dt>access token</dt>
+<dd>@await ViewContext.HttpContext.GetTokenAsync("access_token")</dd>
+
+<dt>refresh token</dt>
+<dd>@await ViewContext.HttpContext.GetTokenAsync("refresh_token")</dd>
+
+
+<table class="table table-sm table-bordered">
+    <tr>
+        <th>Subject</th>
+        <th>Issuer</th>
+        <th>Type</th>
+        <th>Value</th>
+    </tr>
+    @foreach (var claim in User?.Claims.OrderBy(x => x.Type))
+    {
+        <tr>
+            <td>@claim.Subject.Name</td>
+            <td>@claim.Issuer</td>
+            <td>@claim.Type</td>
+            <td>@claim.Value</td>
+        </tr>
+    }
+</table>

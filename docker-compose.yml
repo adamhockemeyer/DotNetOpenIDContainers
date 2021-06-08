@@ -1,0 +1,32 @@
+# Please refer https://aka.ms/HTTPSinContainer on how to setup an https developer certificate for your ASP .NET Core service.
+
+version: '3.4'
+
+services:
+  web:
+    image: web
+    build:
+      context: .
+      dockerfile: web/Dockerfile
+    ports:
+      - 5000:5000
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+  api1:
+    image: api1
+    build:
+      context: .
+      dockerfile: api1/Dockerfile
+    ports:
+      - 5001:5001
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+  api2:
+    image: api2
+    build:
+      context: .
+      dockerfile: api2/Dockerfile
+    ports:
+      - 5002:5002
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development

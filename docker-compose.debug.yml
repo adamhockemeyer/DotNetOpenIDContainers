@@ -1,0 +1,53 @@
+# Please refer https://aka.ms/HTTPSinContainer on how to setup an https developer certificate for your ASP .NET Core service.
+
+version: '3.4'
+
+services:
+  web:
+    image: web
+    build:
+      context: .
+      dockerfile: web/Dockerfile
+    ports:
+      - 32789:80
+      - 32788:443
+    depends_on: 
+      - "api1"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=password
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+      - Api1Service__BaseAddress=http://api1
+    volumes:
+      - ~/.aspnet/https:/https:ro
+  api1:
+    image: api1
+    build:
+      context: .
+      dockerfile: api1/Dockerfile
+    ports:
+      - 32779:80
+      - 32778:443
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=password
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+    volumes:
+      - ~/.aspnet/https:/https:ro
+  api2:
+    image: api2
+    build:
+      context: .
+      dockerfile: api2/Dockerfile
+    ports:
+      - 32769:80
+      - 32768:443
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=password
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+    volumes:
+      - ~/.aspnet/https:/https:ro

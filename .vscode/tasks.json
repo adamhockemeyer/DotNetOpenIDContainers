@@ -1,0 +1,222 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "docker-build",
+			"label": "docker-build: debug",
+			"dependsOn": [
+				"build"
+			],
+			"dockerBuild": {
+				"tag": "dotnetopenidcontainers:dev",
+				"target": "base",
+				"dockerfile": "${workspaceFolder}/api2/Dockerfile",
+				"context": "${workspaceFolder}",
+				"pull": true
+			},
+			"netCore": {
+				"appProject": "${workspaceFolder}/api2/api2.csproj"
+			}
+		},
+		{
+			"type": "docker-build",
+			"label": "docker-build: release",
+			"dependsOn": [
+				"build"
+			],
+			"dockerBuild": {
+				"tag": "dotnetopenidcontainers:latest",
+				"dockerfile": "${workspaceFolder}/api2/Dockerfile",
+				"context": "${workspaceFolder}",
+				"pull": true
+			},
+			"netCore": {
+				"appProject": "${workspaceFolder}/api2/api2.csproj"
+			}
+		},
+		{
+			"type": "docker-run",
+			"label": "docker-run: debug",
+			"dependsOn": [
+				"docker-build: debug"
+			],
+			"dockerRun": {},
+			"netCore": {
+				"appProject": "${workspaceFolder}/api2/api2.csproj",
+				"enableDebugging": true
+			}
+		},
+		{
+			"type": "docker-run",
+			"label": "docker-run: release",
+			"dependsOn": [
+				"docker-build: release"
+			],
+			"dockerRun": {},
+			"netCore": {
+				"appProject": "${workspaceFolder}/api2/api2.csproj"
+			}
+		},
+		{
+			"label": "build-web",
+			"command": "dotnet",
+			"type": "process",
+			"args": [
+				"build",
+				"${workspaceFolder}/web/web.csproj",
+				"/property:GenerateFullPaths=true",
+				"/consoleloggerparameters:NoSummary"
+			],
+			"problemMatcher": "$msCompile"
+		},
+		{
+			"label": "publish-web",
+			"command": "dotnet",
+			"type": "process",
+			"args": [
+				"publish",
+				"${workspaceFolder}/web/web.csproj",
+				"/property:GenerateFullPaths=true",
+				"/consoleloggerparameters:NoSummary"
+			],
+			"problemMatcher": "$msCompile"
+		},
+		{
+			"label": "build-api1",
+			"command": "dotnet",
+			"type": "process",
+			"args": [
+				"build",
+				"${workspaceFolder}/api1/api1.csproj",
+				"/property:GenerateFullPaths=true",
+				"/consoleloggerparameters:NoSummary"
+			],
+			"problemMatcher": "$msCompile"
+		},
+		{
+			"label": "publish-api1",
+			"command": "dotnet",
+			"type": "process",
+			"args": [
+				"publish",
+				"${workspaceFolder}/api1/api1.csproj",
+				"/property:GenerateFullPaths=true",
+				"/consoleloggerparameters:NoSummary"
+			],
+			"problemMatcher": "$msCompile"
+		},
+		{
+			"label": "build-api2",
+			"command": "dotnet",
+			"type": "process",
+			"args": [
+				"build",
+				"${workspaceFolder}/api2/api2.csproj",
+				"/property:GenerateFullPaths=true",
+				"/consoleloggerparameters:NoSummary"
+			],
+			"problemMatcher": "$msCompile"
+		},
+		{
+			"label": "publish-api1",
+			"command": "dotnet",
+			"type": "process",
+			"args": [
+				"publish",
+				"${workspaceFolder}/api2/api2.csproj",
+				"/property:GenerateFullPaths=true",
+				"/consoleloggerparameters:NoSummary"
+			],
+			"problemMatcher": "$msCompile"
+		},
+		{
+			"label": "watch",
+			"command": "dotnet",
+			"type": "process",
+			"args": [
+				"watch",
+				"run",
+				"${workspaceFolder}/api2/api2.csproj",
+				"/property:GenerateFullPaths=true",
+				"/consoleloggerparameters:NoSummary"
+			],
+			"problemMatcher": "$msCompile"
+		},
+		{
+			"label": "clean",
+			"command": "dotnet",
+			"args": [
+				"clean",
+				"/property:GenerateFullPaths=true",
+				"/consoleloggerparameters:NoSummary"
+			],
+			"type": "process",
+			"problemMatcher": "$msCompile",
+			"options": {
+				"cwd": "${workspaceFolder}/authtestahock"
+			}
+		},
+		{
+			"label": "build",
+			"command": "dotnet",
+			"args": [
+				"build",
+				"/property:GenerateFullPaths=true",
+				"/consoleloggerparameters:NoSummary"
+			],
+			"type": "process",
+			"dependsOn": "clean",
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"problemMatcher": "$msCompile",
+			"options": {
+				"cwd": "${workspaceFolder}/authtestahock"
+			}
+		},
+		{
+			"label": "clean release",
+			"command": "dotnet",
+			"args": [
+				"clean",
+				"--configuration",
+				"Release",
+				"/property:GenerateFullPaths=true",
+				"/consoleloggerparameters:NoSummary"
+			],
+			"type": "process",
+			"problemMatcher": "$msCompile",
+			"options": {
+				"cwd": "${workspaceFolder}/authtestahock"
+			}
+		},
+		{
+			"label": "publish",
+			"command": "dotnet",
+			"args": [
+				"publish",
+				"--configuration",
+				"Release",
+				"/property:GenerateFullPaths=true",
+				"/consoleloggerparameters:NoSummary"
+			],
+			"type": "process",
+			"dependsOn": "clean release",
+			"problemMatcher": "$msCompile",
+			"options": {
+				"cwd": "${workspaceFolder}/authtestahock"
+			}
+		},
+		{
+			"type": "func",
+			"dependsOn": "build",
+			"options": {
+				"cwd": "${workspaceFolder}/authtestahock/bin/Debug/netcoreapp3.1"
+			},
+			"command": "host start",
+			"isBackground": true,
+			"problemMatcher": "$func-dotnet-watch"
+		}
+	]
+}
